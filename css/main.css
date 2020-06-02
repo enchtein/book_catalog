@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Raleway&display=swap');
+
+body {
+    background-color: #f2f2f2;
+    font-family: "Lato";
+    font-weight: 300;
+    font-size: 16px;
+    color: #555;
+
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h4, h5, h6 {
+    font-family: "Raleway";
+    font-weight: 300;
+    color: #333;
+}
+h3 { /* УСТАНОВКА ЦВЕТА ДЛЯ ВАЛИДАЦИИ */
+	font-family: "Raleway";
+	font-weight: 300;
+	color: #FF0000;
+}
+
+p {
+    line-height: 28px;
+    margin-bottom: 25px;
+}
+
+a {
+    color: #f85c37;
+}
+
+a:hover, a:focus {
+    color: #7b7b7b;
+    text-decoration: none;
+    outline: 0;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+
+#headerwrap {
+	background: url(../img/header-bg.png) no-repeat center top;
+	margin-top: -10px;
+	padding-top: 20px;
+	text-align: center;
+	background-attachment: relative;
+	background-position: center center;
+	min-height: 300px;
+	width: 100%;
+	
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+#headerwrap h1 {
+	margin-top: 100px;
+	color: black;
+	font-size: 70px;
+	font-weight: 300;
+	letter-spacing: 3px;
+}
+
+#headerwrap h2 {
+	color: black;
+	font-size: 40px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+}
+
+.w {
+	padding-top: 35px;
+}
+
+.w h4 {
+	font-size: 25px;
+}
+
+#new {
+	/*text-align: center;*/
+	max-width: 1900px;
+	/*min-height: 1000px;*/
+}
+
+#dg {
+	background: #e0e0e0;
+	padding-top: 35px;
+	padding-bottom: 70px;
+	text-align: center;
+	min-height: 1000px;
+	/*
+	max-width: 1600px;
+	margin-left: 100px;
+	margin: auto;*/
+}
+
+#dg h4 {
+	font-size: 40px;
+}
+
+.tilt {
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.tilt:hover {
+	-webkit-transform: rotate(-10deg);
+	-moz-transform: rotate(-10deg);
+	-o-transform: rotate(-10deg);
+	-ms-transform: rotate(-10deg);
+	transform: rotate(-10deg);
+}
+
+.works-img img{
+	width: 80%;
+}
+
+.works-img p{
+	padding-bottom: 5px;
+}
+
+.wb {
+	padding-top: 35px;
+	/*margin-bottom:*/
+	text-align: center;
+}
+
+.wb h4	{
+	font-size: 35px;
+}
+
+#lg {
+	background: #ebebeb;
+	padding-top: 70px;
+	padding-bottom: 70px;
+	text-align: center;
+	max-width: 1300px;
+	margin:auto;
+}
+
+#lg h4 {
+	font-size: 45px;
+}
+
+#r {
+	background: #ff7878;
+	padding-top: 70px;
+	padding-bottom: 70px;
+	text-align: center;
+}
+
+#r h4 {
+	color: white;
+	font-size: 45px;
+}
+
+#r p {
+	color: white;
+}
+
+#f {
+	background: #2d2d2d;
+	padding-top: 30px;
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+#f i {
+	color: #bdbdbd;
+	font-size: 30px;
+	padding: 20px;
+}
+
+#f i:hover {
+	color: #ff7878;
+}
+
+.container-fluid-my, .container-sm-my, .container-md-my, .container-lg-my, .container-xl-my {
+  width: 80%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#fixed {
+	position:fixed;
+	/*margin-left: 1%;*/
+}
+
+.raz {
+	all: unset;
+	-moz-appearance: textfield;
+	width: 3em;
+	text-align: center;
+  }
+  .razprice { /* ДЛЯ ЦЕНЫ ЧИСТО */
+	all: unset;
+	-moz-appearance: textfield;
+	width: 7em;
+	text-align: center;
+	margin-left: -20%;
+  }
+  .raz::-webkit-inner-spin-button { 
+	display: none;
+  }
+  
+ #forprice h5{
+	 margin-left: -7%;
+ }
+
+  #centered {
+	margin-left: 13%;
+  }
+    #centeredid {
+	margin-left: 2%;
+  }
+  
+  .resultprice { /* ДЛЯ РЕЗУЛЬТАТА ЦЕНЫ ЧИСТО */
+	all: unset;
+	-moz-appearance: textfield;
+	width: 7em;
+	text-align: center;
+	margin-right: -20%;
+  }
+
+  #fulldescr {
+	  min-height: 200px;
+  }
+
+ #savechanges {
+	 max-height: 30px;
+	 margin-left: 80%;
+	 margin-bottom: -50px;
+ }
+ 
+.nav-link-my {
+  display: block;
+  padding: 0.5rem 1.5rem;
+  text-align: center;
+ /* margin-right: auto;*/
+}
+
+#search {
+padding-top: 0px;
+padding-bottom: 0px;
+padding-left: 70%;
+text-align: center;
+}
+
+	#add_book {
+		/*margin-right:10%;*/
+		padding-left: 40%;
+	}
+
+	#search_book {
+	padding-top: 0px;
+	margin-left:50%;
+	}
+
+	#on_full_div {
+		width: 100%;
+		height: 100%;
+	}
+
+	#cat1 {
+		max-height: 250px;
+	}
+	#for_form_top {
+		min-width:90%;
+	}
+	textarea.dline {
+		margin: 10px;
+	}
