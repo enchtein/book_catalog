@@ -47,7 +47,13 @@ hr {
     margin: 1em 0;
     padding: 0;
 }
+#dgi td {border: 1px solid grey;}
+#dgi th {border: 1px solid grey;}
 
+.tablecontainer {
+    width: 100%;
+    overflow: scroll;
+}
 
 #headerwrap {
 	background: url(../img/header-bg.png) no-repeat center top;
@@ -104,6 +110,16 @@ hr {
 	max-width: 1600px;
 	margin-left: 100px;
 	margin: auto;*/
+}
+
+#dgi {
+	background: #e0e0e0;
+	padding-top: 35px;
+	padding-bottom: 70px;
+	text-align: center;
+	min-height: 1000px;
+	padding-left: 35px;
+	padding-right: 35px;
 }
 
 #dg h4 {

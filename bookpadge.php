@@ -1,56 +1,35 @@
 <?php
-include ('include_all.php'); // подключение всех файлов
+require_once "../GeekForLess/index_all_classes.php"; // подключение файлов
+$data = new QueryBuilder;
 
-$id_book = $_GET['id_book']; // получаем ID книги через адрессную строку
-$myarr = array('*', 'books', 'id_book = '.$id_book);
-$empl = new SQL();
-$result=$empl->select($myarr); // в этом массиве должна быть вся информация о выбранной книге
+$books = 'book'; // данные для выборки
+$all_books = $data->select($books);
 
-#Здесь содержиться выборка по id_author и id_genre для конкретной книги
-					// для авторов
-$for_MY_authors = array('*', 'books_vs_author', 'id_book=' . $id_book);
-$emplll = new SQL();
-$author_MY_mass=$emplll->select($for_MY_authors); // в этом массиве должны быть все id_author для конкретной книги
-foreach ($author_MY_mass as $key=>$value) {
-	$value_from_author = array('author', 'author', 'id_author='.$value['id_author']); // выбрать ТОЛЬКО имена авторов
-	$emplid_author = new SQL();
-	$author_value=$emplid_author->select($value_from_author); // в этом массиве должны быть все авторы
-	$total_authors[] = $author_value[0]['author']; // ЗДЕСЬ ПОЛУЧАЕТ НОРМАЛЬНЫЙ МАССИВ СО ВСЕМИ авторами для конкретной книги
+if (isset($_GET['id_book'])) {
+	$pre_on_screen = new BookInfo($all_books, $_GET);
+	$book_mass = $pre_on_screen->view(); // вывод инфы на экран
+	$on_screen = $book_mass;
 }
-$comma_separated_authors = implode(",", $total_authors); // записываем всех авторов книги через запятую в СТРОКУ
 
-					// для жанров
-$for_MY_genres = array('*', 'books_vs_genre', 'id_book=' . $id_book);
-$emplll_gen = new SQL();
-$genre_MY_mass=$emplll_gen->select($for_MY_genres); // в этом массиве должны быть все id_gerne для конкретной книги
-foreach ($genre_MY_mass as $key=>$value) {
-	$value_from_genre = array('genre', 'genre', 'id_genre='.$value['id_genre']); // выбрать ТОЛЬКО названия жанров
-	$emplid_genre = new SQL();
-	$genre_value=$emplid_genre->select($value_from_genre); // в этом массиве должны быть все жанры
-	$total_genres[] = $genre_value[0]['genre']; // ЗДЕСЬ ПОЛУЧАЕТ НОРМАЛЬНЫЙ МАССИВ СО ВСЕМИ жанрами для конкретной книги
-}
-$comma_separated_genres = implode(",", $total_genres); // записываем все жанры книги через запятую в СТРОКУ
-
-## Отправка письма
 if (isset($_POST['buy'])) {
-
-	$task_adress = new Validate(); // проверка адресса на заполненность
-	$check_adress=$task_adress->myvald($_POST['adress']); // результат проверки
-	$task_user_name = new Validate(); // проверка Ф.И.О. на заполненность
-	$check_user_name=$task_adress->myvald($_POST['user_name']); // результат проверки
+	$check = new Validate($_POST['adress'], ''); // проверка image на заполненность
+	$check_adress = $check->myEmpty($_POST['adress']);
+	
+	$check = new Validate($_POST['user_name'], ''); // проверка image на заполненность
+	$check_user_name = $check->myEmpty($_POST['user_name']);
 
 	if ($check_adress=='' && $check_user_name=='') {
-	// массив данных для отправки админу
-	$mass_for_buy = array ("название книги" => "название книги: " . $result[0]['book_name'], 
-					   "автор" => "автор: " . $comma_separated_authors, 
-					   "жанр" => "жанр: " . $comma_separated_genres, 
-					   "цена" => "цена: " . $result[0]['price'], 
-					   "кол-во экземпляров" => "кол-во экземпляров: " . $_POST['quantity'], 
-					   "конечная стоимость" => "конечная стоимость: " . $_POST['quantity']*$result[0]['price'], 
-					   "Адресс" => "Адресс: " . $_POST['adress'], 
-					   "Ф.И.О." => "Ф.И.О.: " . $_POST['user_name']);
-	$order = implode("<br />", $mass_for_buy); // формирование строки из массива
-		$sending = new email(); // отправка письма
+		// массив данных для отправки админу
+		$mass_for_buy = array ("название книги" => "название книги: " . $on_screen['data'][0]['book_name'], 
+						   "автор" => "автор: " . $on_screen['data'][0]['author'], 
+						   "жанр" => "жанр: " . $on_screen['data'][0]['genre'], 
+						   "цена" => "цена: " . $on_screen['data'][0]['price'], 
+						   "кол-во экземпляров" => "кол-во экземпляров: " . $_POST['quantity'], 
+						   "конечная стоимость" => "конечная стоимость: " . $_POST['quantity'] * $on_screen['data'][0]['price'], 
+						   "Адресс" => "Адресс: " . $_POST['adress'], 
+						   "Ф.И.О." => "Ф.И.О.: " . $_POST['user_name']);
+		$order = implode("<br />", $mass_for_buy); // формирование строки из массива
+		$sending = new Email(); // отправка письма
 		$answer=$sending->sent($order); // результаттом должно быть сообщение "Email was sent!"
 	}
 }
@@ -174,27 +153,27 @@ if (isset($_POST['buy'])) {
 							<div class="col-sm-4 text-center">
 							</div>
 							<div class="col-sm-8 text-left">
-								<h4><?php echo $result[0]['book_name']; ?></h4>
+								<h4><?php echo $on_screen['data'][0]['book_name']; ?></h4>
 							</div>
 						</div>
                     </div>
 					<div class="col-4">
 						<div class="works-img">
-							<img src="<?php echo $result[0]['images']; ?>" alt="">
+							<img src="<?php echo $on_screen['data'][0]['image']; ?>" alt="">
 						</div>
 					</div>
 					<div class="col-2 text-left">
-						<h5>Автор: <?php echo $comma_separated_authors; ?></h5>
-						<h5>Жанр: <?php echo $comma_separated_genres; ?></h5>
+						<h5>Автор: <?php echo $on_screen['data'][0]['author']; ?></h5>
+						<h5>Жанр: <?php echo $on_screen['data'][0]['genre']; ?></h5>
 					</div>
 					<div class="col-6">
 						<p>Описание книги
 						<br>
-							<?php echo $result[0]['short_descr']; ?>
+							<?php echo $on_screen['data'][0]['short_descr']; ?>
 						</p>
 					</div>
 					<div id="fulldescr" class="col-12 text-center border border-primary">
-						<?php echo $result[0]['full_descr']; ?>
+						<?php echo $on_screen['data'][0]['full_descr']; ?>
 					</div>
 <form action="" method="post"> <!-- для оформления заказа -->
                     <div id="buy" class="col-12"><!--Форма для покупки книги-->
@@ -204,7 +183,7 @@ if (isset($_POST['buy'])) {
 									<div id="centeredid" class="row">
 									Цена&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Количество&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Стоимотсть</div>
 									<div id="centered" class="row">
-								<input id="resultcost" type="number" min="0" max="1000" value="<?php echo $result[0]['price']; ?>" width="30px" readonly class="razprice"> <!-- ДЛЯ ЦЕНЫ ЧИСТО -->
+								<input id="resultcost" type="number" min="0" max="1000" value="<?php echo $on_screen['data'][0]['price']; ?>" width="30px" readonly class="razprice"> <!-- ДЛЯ ЦЕНЫ ЧИСТО -->
 								<button type="button" onclick="minus();this.nextElementSibling.stepDown()">-</button>
 								<input id="countbooks" name="quantity" type="number" min="1" max="100" value="1" readonly class="raz">
 								<button type="button" onclick="plus();this.previousElementSibling.stepUp()">+</button>

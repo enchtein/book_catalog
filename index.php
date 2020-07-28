@@ -1,64 +1,18 @@
 <?php
-include ('include_all.php'); // подключение всех файлов
+require_once "../GeekForLess/index_all_classes.php"; // подключение файлов
 
-## ВСЕ КНИГИ
-$myarr = array('*', 'books'); // данные для sql запроса
-$empl = new SQL();
-$bd_data=$empl->select($myarr); // все книги
-$on_screen = $bd_data;
-$title = "Количество книг в библиотеке: " . count($bd_data); // здесь title
+$data = new QueryBuilder;
 
-## Вывод всей информации
-if ($_GET['genre']!='') { // При клике на рефайн делается выборка из таблицы books по genre
-	$for_genres = array('*', 'genre');
-	$empl = new SQL();
-	$genre_mass=$empl->select($for_genres); // в этом массиве должны быть все жанры
-	foreach ($genre_mass as $key=>$value) {
-		$find_genre = array_search($_GET['genre'], $value);
-		if ($find_genre!='') {
-			$res_find_genre = $value['id_genre'];
-		}
-	}
+$books = 'book'; // данные для выборки
+$on_screen = $data->select($books);
 
-	$for_MY_genres = array('id_book', "`books_vs_genre`", "`id_genre` = '" . $res_find_genre . "'"); // данные для sql запроса
-	$emplll = new SQL();
-	$genre_MY_mass=$emplll->select($for_MY_genres); // в этом массиве должны быть все id_book выбранного жанра
+if(isset($_GET['genre']) || isset($_GET['author'])) {
 
-	foreach ($genre_MY_mass as $val) {
-		$for_MY_books = array('*', 'books', 'id_book='.$val['id_book']);
-		$emplllbook = new SQL();
-		$books_MY_mass=$emplllbook->select($for_MY_books); // в этом массиве должны быть все книги по жанру
-		$result_books_by_genre[]=$books_MY_mass[0];
-	}
-	$on_screen = $result_books_by_genre;
-	$title = "Количество книг в жанре: " . count($on_screen); // здесь title
+	$pre_on_screen = new PublishRefain($on_screen, $_GET);
+	$genre_mass = $pre_on_screen->view(); // вывод инфы на экран
+	$on_screen = $genre_mass;
 }
-
-
-if ($_GET['author']!='') { // При клике на рефайн делается выборка из таблицы books по author
-	$for_authors = array('*', 'author');
-	$empl = new SQL();
-	$author_mass=$empl->select($for_authors); // в этом массиве должны быть все авторы
-	foreach ($author_mass as $key=>$value) {
-		$find_author = array_search($_GET['author'], $value);
-		if ($find_author!='') {
-			$res_find_author = $value['id_author'];
-		}
-	}
-
-	$for_MY_authors = array('id_book', "`books_vs_author`", "`id_author` = '" . $res_find_author . "'"); // данные для sql запроса
-	$emplll = new SQL();
-	$author_MY_mass=$emplll->select($for_MY_authors); // в этом массиве должны быть все id_book выбранного автора
-
-	foreach ($author_MY_mass as $val) {
-		$for_MY_books = array('*', 'books', 'id_book='.$val['id_book']);
-		$emplllbook = new SQL();
-		$books_MY_mass=$emplllbook->select($for_MY_books); // в этом массиве должны быть все книги по автору
-		$result_books_by_author[]=$books_MY_mass[0];
-	}
-	$on_screen = $result_books_by_author;
-	$title = "Количество книг автора: " . count($on_screen); // здесь title
-}
+$title = "Количество книг для " . $on_screen['from_where'] . ": " . count($on_screen['data']); // здесь title
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,7 +35,7 @@ if ($_GET['author']!='') { // При клике на рефайн делаетс
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="for admin/admin_index.php">А ты точно админ?</a>
+				<a class="nav-link" href="for_admin/admin_index.php">А ты точно админ?</a>
 			</li>
 		</ul>
 		<?php
@@ -132,11 +86,11 @@ if ($_GET['author']!='') { // При клике на рефайн делаетс
 					<div class="col-sm-12 text-center">
 						<h4><?php echo $title; ?></h4>
 					</div>
-<?php if ($on_screen!=''): 
-		foreach ($on_screen as $key=>$value) : ?> <!-- вывод книг -->	
+<?php if (!empty($on_screen) && $on_screen['data']!=''): 
+		foreach ($on_screen['data'] as $key=>$value) : ?> <!-- вывод книг -->
 					<div class="col-sm-3">
 						<div class="works-img tilt">
-							<a href="bookpadge.php?id_book=<?php echo $value['id_book'];?>"><img src="<?php echo $value['images'];?>" alt=""></a><!--переход на страницу с книгой (адрессная строка)-->
+							<a href="bookpadge.php?id_book=<?php echo $value['id_book'];?>"><img src="<?php echo $value['image'];?>" alt=""></a><!--переход на страницу с книгой (адрессная строка)-->
 							<p><?php echo $value['book_name']; ?></p>
 						</div>
 					</div>

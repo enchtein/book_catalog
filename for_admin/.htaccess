@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Thats protected Area!"
+AuthUserFile C:/Users/encht/Downloads/OpenServer/domains/GeekForLess/for_admin/.htpasswd
+Require valid-user

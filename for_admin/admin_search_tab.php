@@ -3,7 +3,8 @@
 		<button type="submit" name="search">Поиск</button>
 <?php ## для поиска
 if (isset($_POST['search'])) { // если нажата кнопка поиска вывести результат поиска <> иначе вывести все
-	require_once "../GeekForLess/index_all_classes.php"; // подключение файлов
+	//require_once "../include/classes/class/Search.php"; // вызов подключения к классам
+	require_once "../include/classes/class/all_classes.php"; // подключение файлов
 	
 	$res_search = (new Search($_POST['text_for_search']))->viewSearch(); // поиск
 		if ($res_search['data']!='') {

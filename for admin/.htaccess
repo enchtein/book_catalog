@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "admin"
-AuthUserFile /domains/Book Catalog/for admin/.htpasswd
-Require valid-user
